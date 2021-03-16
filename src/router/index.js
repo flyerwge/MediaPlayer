@@ -1,23 +1,45 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import discovery from '../components/Middle/discovery.vue'
+import playlists from '../components/Middle/playlists.vue'
+import songs from '../components/Middle/songs.vue'
+import mvs from '../components/Middle/mvs.vue'
+import result from '../components/Middle/result.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/discovery',
+    name: 'discovery',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/discovery.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/playlists',
+    name: 'playlists',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/playlists.vue')
+  },
+  {
+    path: '/songs',
+    name: 'songs',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/songs.vue')
+  },
+  {
+    path: '/mvs',
+    name: 'mvs',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/mvs.vue')
+  },
+  {
+    path: '/result',
+    name: 'result',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/result.vue')
+  },
 ]
 
 const router = new VueRouter({

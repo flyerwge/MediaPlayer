@@ -1,19 +1,6 @@
-# mediaplayer
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+# 网页版音乐播放器
 
-### Compiles and minifies for production
-```
-npm run build
-```
+仿照网易云，web版音乐播放器，正在学习中
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
