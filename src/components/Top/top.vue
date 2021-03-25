@@ -37,9 +37,11 @@ export default {
 
 <style>
 .top {
-  display: flex;
   background-color: #696969;
   height: 40px;
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 .search {
   height: 16px;
