@@ -4,20 +4,63 @@
       <div>
         <img src="../../assets/bottom/pre.png" />
       </div>
-      <div>
-        <img src="../../assets/bottom/play.png" class="img-run" />
+      <div @click="toggle()">
+        <img
+          src="../../assets/bottom/play.png"
+          class="img-run"
+          v-show="isPlay"
+        />
+        <img
+          src="../../assets/bottom/play2.png"
+          class="img-run"
+          v-show="!isPlay"
+        />
       </div>
       <div>
         <img src="../../assets/bottom/next.png" />
       </div>
     </div>
-    <div class="botton-mid"></div>
+    <div class="botton-mid">
+      <audio
+        :src="musicUrl"
+        controls
+        autoplay
+        class="bottom-mid-progress"
+      ></audio>
+    </div>
     <div class="bottom-right"></div>
   </div>
 </template>
 
 <script>
-export default {};
+import Bus from "../bus.js";
+
+export default {
+  name: "Bottom",
+  data() {
+    return {
+      isPlay: true,
+      musicUrl: "",
+    };
+  },
+
+  mounted() {
+    Bus.$on("val", (data) => {
+      this.musicUrl = data;
+    });
+  },
+
+  methods: {
+    toggle() {
+      this.isPlay = !this.isPlay;
+      // if (this.isPlay && this.$refs.audio.readyState == 4)
+      //   this.$refs.audio.play();
+      // else {
+      //   this.$refs.audio.pause();
+      // }
+    },
+  },
+};
 </script>
 
 <style>
@@ -47,6 +90,15 @@ export default {};
   height: 40px;
 }
 
+.bottom-mid {
+  width: 85%;
+  background-color: black;
+}
+
+.bottom-mid-progress {
+  width: 70%;
+  background-color: black;
+}
 /* .img-run {
   width: 30px;
 } */

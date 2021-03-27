@@ -18,6 +18,22 @@
       <!-- 歌单 -->
       <el-tab-pane label="歌单" name="second">
         <div>
+          <!-- 精品歌单 -->
+          <div>
+            <label>热门标签：</label>
+            <span v-for="(item, index) in tag.slice(0, 10)" :key="index">
+              <!-- 动态绑定类名 -->
+              <span
+                class="hot-tag"
+                :class="{ active: clickTag == item.name }"
+                @click="clickTag = item.name"
+              >
+                {{ item.name }}
+              </span>
+            </span>
+          </div>
+
+          <!-- 歌单 -->
           <div class="items">
             <div class="item" v-for="(item, index) in list" :key="index">
               <div class="img-wrap">
@@ -42,18 +58,28 @@
 
       <!-- 最新音乐 -->
       <el-tab-pane label="最新音乐" name="fourth">
-        <div class="newsongs">
-          <div class="new-song-items">
-            <div
-              class="new-song-item"
-              v-for="(item, index) in songs"
-              :key="index"
-            >
-              <div class="new-song-img">
-                <img :src="item.picUrl" class="img-item" />
-                <span>{{ item.name }}</span>
-                <span>{{ item.song.artists[0].name }}</span>
-              </div>
+        <div class="new-song-items">
+          <div
+            class="new-song-item"
+            v-for="(item, index) in songs"
+            :key="index"
+          >
+            <div class="new-song-img">
+              <img
+                :src="item.picUrl"
+                class="img-item"
+                @click="
+                  playMusic(
+                    item.id,
+                    item.picUrl,
+                    item.name,
+                    item.song.artists[0].name
+                  )
+                "
+              />
+              <div>{{ item.name }}</div>
+              <div>{{ item.song.artists[0].name }}</div>
+              <div>{{ item.song.duration }}</div>
             </div>
           </div>
         </div>
@@ -64,6 +90,7 @@
 
 <script>
 import axios from "axios";
+import Bus from "../bus.js";
 
 export default {
   name: "discovery",
@@ -79,11 +106,57 @@ export default {
       songs: [],
       // 排行榜
       rank: [],
+      // 热门标签
+      tag: [],
+      // active高亮
+      clickTag: 0,
     };
   },
+
+  // 侦听器
+  watch: {
+    // 侦听点击目标clickTag变化
+    clickTag() {
+      console.log(this.clickTag);
+      axios({
+        url: "http://localhost:3000/top/playlist/highquality",
+        method: "get",
+        params: {
+          // limit: 20,
+          cat: this.clickTag,
+        },
+      }).then((response) => {
+        // console.log(response);
+        this.list = response.data.playlists;
+      });
+    },
+  },
+
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+
+    // 点击播放音乐
+    playMusic(id, picUrl, name, artist) {
+      // console.log(id);
+      axios({
+        url: "http://localhost:3000/song/url",
+        method: "get",
+        params: {
+          id,
+        },
+      }).then((response) => {
+        console.log(response);
+        //需要将urlPlay传递给bottom播放组件
+        let urlPlay = response.data.data[0].url;
+        //将音乐url传递给公共bus
+        Bus.$emit("val", urlPlay);
+      });
+
+      Bus.$emit("picUrl", picUrl);
+      Bus.$emit("name", name);
+      Bus.$emit("artist", artist);
     },
   },
 
@@ -115,17 +188,45 @@ export default {
     axios({
       url: "http://localhost:3000/personalized/newsong",
       method: "get",
+      params: {
+        limit: 30,
+      },
     }).then((response) => {
       // console.log(response);
       this.songs = response.data.result;
+      // 显示时间，毫秒转为分、秒显示
+      for (let i = 0; i < this.songs.length; i++) {
+        let duration = this.songs[i].song.duration;
+        duration /= 1000;
+        let min = Math.round(duration / 60); //分
+        let sec = Math.round(duration % 60); //秒
+        if (min < 10) {
+          min = "0" + min;
+        }
+        if (sec < 10) {
+          sec = "0" + sec;
+        }
+        this.songs[i].song.duration = min + ":" + sec;
+      }
     });
 
     axios({
       url: "http://localhost:3000/toplist",
       method: "get",
     }).then((response) => {
-      console.log(response);
+      // console.log(response);
       this.rank = response.data.list;
+    });
+
+    axios({
+      url: "http://localhost:3000/playlist/highquality/tags",
+      method: "get",
+      // params: {
+      //   limit: 10,
+      // },
+    }).then((response) => {
+      // console.log(response);
+      this.tag = response.data.tags;
     });
   },
 };
@@ -151,6 +252,14 @@ export default {
 .discovery-music {
   z-index: 0;
   position: relative;
+}
+
+.hot-tag {
+  cursor: pointer;
+}
+
+.active {
+  color: #fff;
 }
 
 .items {
@@ -182,12 +291,21 @@ export default {
   overflow: hidden;
 }
 
-.new-song-image {
-  width: 75px;
+.new-song-items {
+  padding-left: 50px;
+}
+
+.new-song-img div {
+  display: inline-block; /*div文字在同一行出现*/
+  width: 27%;
+  /* height: 75px; */
+  margin-left: 40px;
 }
 
 .img-item {
-  width: 75px;
+  width: 70px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .rank-img {
