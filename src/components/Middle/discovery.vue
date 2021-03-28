@@ -77,6 +77,10 @@
                   )
                 "
               />
+              <img
+                class="new-song-run"
+                src="../../assets/playmusic/bofang.svg"
+              />
               <div>{{ item.name }}</div>
               <div>{{ item.song.artists[0].name }}</div>
               <div>{{ item.song.duration }}</div>
@@ -295,6 +299,10 @@ export default {
   padding-left: 50px;
 }
 
+.new-song-img {
+  position: relative;
+}
+
 .new-song-img div {
   display: inline-block; /*div文字在同一行出现*/
   width: 27%;
@@ -306,6 +314,13 @@ export default {
   width: 70px;
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+.new-song-run {
+  position: absolute;
+  width: 30px;
+  left: 22px;
+  top: 22px;
 }
 
 .rank-img {

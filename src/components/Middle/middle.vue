@@ -7,7 +7,7 @@
         <li><router-link to="/discovery">发现音乐</router-link></li>
         <li><router-link to="/playlists">推荐音乐</router-link></li>
         <li><router-link to="/songs">最新音乐</router-link></li>
-        <li><router-link to="/mvs">最新MV</router-link></li>
+        <li><router-link to="/mvs">全部MV</router-link></li>
       </ul>
 
       <!-- 当前播放音乐显示 -->
@@ -61,7 +61,7 @@ export default {
   height: 100%;
   min-height: 850px;
   width: 100%;
-  margin-top: 39px;
+  margin-top: 49px;
   margin-bottom: 44px;
 }
 .index .nav {
