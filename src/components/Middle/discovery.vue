@@ -306,8 +306,12 @@ export default {
 .new-song-img div {
   display: inline-block; /*div文字在同一行出现*/
   width: 27%;
+  height: 70px;
   /* height: 75px; */
   margin-left: 40px;
+  position: relative;
+  line-height: 70px;
+  overflow: hidden;
 }
 
 .img-item {
