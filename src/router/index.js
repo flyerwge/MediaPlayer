@@ -3,9 +3,11 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import discovery from '../components/Middle/discovery.vue'
 import playlists from '../components/Middle/playlists.vue'
+import playlist from '../components/Middle/playlist.vue'
 import songs from '../components/Middle/songs.vue'
 import mvs from '../components/Middle/mvs.vue'
 import result from '../components/Middle/result.vue'
+
 
 Vue.use(VueRouter)
 
@@ -21,6 +23,12 @@ const routes = [
     name: 'playlists',
     // 跳转到对应路径
     component: () => import('../components/Middle/playlists.vue')
+  },
+  {
+    path: '/playlist',
+    name: 'playlist',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/playlist.vue')
   },
   {
     path: '/songs',

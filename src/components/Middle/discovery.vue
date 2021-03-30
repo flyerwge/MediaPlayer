@@ -35,7 +35,12 @@
 
           <!-- 歌单 -->
           <div class="items">
-            <div class="item" v-for="(item, index) in list" :key="index">
+            <div
+              class="item"
+              v-for="(item, index) in list"
+              :key="index"
+              @click="getAll(item.id)"
+            >
               <div class="img-wrap">
                 <img :src="item.coverImgUrl" alt="" class="img-recommand" />
               </div>
@@ -119,9 +124,9 @@ export default {
 
   // 侦听器
   watch: {
-    // 侦听点击目标clickTag变化
+    // 侦听点击目标clickTag变化,改变热门标签
     clickTag() {
-      console.log(this.clickTag);
+      // console.log(this.clickTag);
       axios({
         url: "http://localhost:3000/top/playlist/highquality",
         method: "get",
@@ -162,17 +167,18 @@ export default {
       Bus.$emit("name", name);
       Bus.$emit("artist", artist);
     },
+
+    getAll(id) {
+      this.$router.push(`/playlist?listId=${id}`);
+    },
   },
 
   created() {
-    // console.log("created");
-    // let api = "http://localhost:3000/banner";
     axios({
       // url: "http://autumnfish.cn/banner",
       url: "http://localhost:3000/banner",
       method: "get",
     }).then((response) => {
-      // console.log(response.data);
       this.banners = response.data.banners;
     });
 
@@ -184,9 +190,7 @@ export default {
         limit: 20,
       },
     }).then((response) => {
-      // console.log(response);
       this.list = response.data.playlists;
-      // this.list = response.data.result;
     });
 
     axios({
@@ -196,7 +200,6 @@ export default {
         limit: 30,
       },
     }).then((response) => {
-      // console.log(response);
       this.songs = response.data.result;
       // 显示时间，毫秒转为分、秒显示
       for (let i = 0; i < this.songs.length; i++) {
