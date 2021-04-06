@@ -3,7 +3,7 @@
     <div v-for="(item, index) in mvs" :key="index">
       <div class="mv-item">
         <div>
-          <img class="mv-cover" :src="item.cover" />
+          <img class="mv-cover" :src="item.cover" @click="mvPlay(item.id)" />
           <img class="mv-run" src="../../assets/playmusic/bofang.svg" />
         </div>
         <p class="mv-name">{{ item.name }}</p>
@@ -31,6 +31,23 @@ export default {
       // console.log(response);
       this.mvs = response.data.data;
     });
+  },
+
+  methods: {
+    mvPlay(id) {
+      // console.log(id);
+      this.$router.push(`/mvplay?mvid=${id}`);
+
+      // axios({
+      //   url: "http://localhost:3000/mv/detail",
+      //   method: "get",
+      //   params: {
+      //     mvid: id,
+      //   },
+      // }).then((response) => {
+      //   console.log(response);
+      // });
+    },
   },
 };
 </script>

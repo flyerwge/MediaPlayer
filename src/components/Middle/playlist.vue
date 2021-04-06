@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 歌单详情 -->
     <div class="list-top">
       <div class="list-top-cover">
         <img :src="List.coverImgUrl" />
@@ -8,13 +9,22 @@
         <span>{{ List.name }}</span>
         <br />
         <!-- <span>{{ List.creator.nickname }}</span> -->
-        <label v-for="(listTag, index) in List.tags" :key="index"
-          ><span>{{ listTag }}</span></label
-        >
+        <label v-for="(listTag, index) in List.tags" :key="index">
+          <span>{{ listTag }} </span>
+        </label>
         <br />
         <label>简介：</label><span>{{ List.description }}</span>
       </div>
     </div>
+
+    <!-- <div>
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="歌曲列表" name="first"> </el-tab-pane>
+        <el-tab-pane label="评论" name="second">配置管理</el-tab-pane>
+      </el-tabs>
+    </div> -->
+
+    <!-- 歌曲列表 -->
     <div class="list-bottom">
       <thead>
         <th></th>
@@ -51,10 +61,13 @@ export default {
     return {
       // 歌单详情
       List: [],
+      // 歌单评论
+      Comment: [],
     };
   },
 
   created() {
+    // 获取歌单详情
     axios({
       url: "http://localhost:3000/playlist/detail",
       method: "get",
@@ -62,7 +75,6 @@ export default {
         id: this.$route.query.listId,
       },
     }).then((response) => {
-      console.log(response);
       this.List = response.data.playlist;
       // 显示时间，毫秒转为分、秒显示
       for (let i = 0; i < this.List.tracks.length; i++) {
@@ -78,6 +90,18 @@ export default {
         }
         this.List.tracks[i].dt = min + ":" + sec;
       }
+    });
+
+    // 获取歌单评论
+    axios({
+      url: "http://localhost:3000/comment/playlist",
+      method: "get",
+      params: {
+        id: this.$route.query.listId,
+      },
+    }).then((response) => {
+      console.log(response);
+      this.Comment = response.data.comments;
     });
   },
 
@@ -130,5 +154,10 @@ export default {
   padding-top: 30px;
   margin-left: 10px;
   overflow: hidden;
+}
+
+.list-bottom {
+  position: relative;
+  top: 50px;
 }
 </style>

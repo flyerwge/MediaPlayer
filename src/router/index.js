@@ -6,6 +6,7 @@ import playlists from '../components/Middle/playlists.vue'
 import playlist from '../components/Middle/playlist.vue'
 import songs from '../components/Middle/songs.vue'
 import mvs from '../components/Middle/mvs.vue'
+import mvplay from '../components/Middle/mvplay.vue'
 import result from '../components/Middle/result.vue'
 
 
@@ -41,6 +42,12 @@ const routes = [
     name: 'mvs',
     // 跳转到对应路径
     component: () => import('../components/Middle/mvs.vue')
+  },
+  {
+    path: '/mvplay',
+    name: 'mvplay',
+    // 跳转到对应路径
+    component: () => import('../components/Middle/mvplay.vue')
   },
   {
     path: '/result',
