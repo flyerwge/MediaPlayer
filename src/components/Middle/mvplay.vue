@@ -1,6 +1,12 @@
 <template>
   <div class="mv">
     <video :src="mvUrl" controls autoplay class="mv-video"></video>
+
+    <div>
+      <label>MV介绍</label>
+      <div>简介：{{ mvDetail.desc }}</div>
+    </div>
+
     <div class="mv-related">
       <label>相关推荐</label>
       <div v-for="(item, index) in mvRelated" :key="index">
@@ -21,6 +27,8 @@ export default {
 
   data() {
     return {
+      // mv详细数据
+      mvDetail: [],
       // mv播放地址
       mvUrl: "",
       //   相关推荐
@@ -29,6 +37,7 @@ export default {
   },
 
   created() {
+    // 获取mv数据
     axios({
       url: "http://localhost:3000/mv/detail",
       method: "get",
@@ -36,7 +45,8 @@ export default {
         mvid: this.$route.query.mvid,
       },
     }).then((response) => {
-      //   console.log(response);
+      console.log(response);
+      this.mvDetail = response.data.data;
     });
 
     // 获取mv播放地址
@@ -59,7 +69,7 @@ export default {
         id: this.$route.query.mvid,
       },
     }).then((response) => {
-      console.log(response);
+      // console.log(response);
       this.mvRelated = response.data.data;
     });
   },

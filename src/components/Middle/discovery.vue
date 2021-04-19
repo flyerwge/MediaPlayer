@@ -5,14 +5,10 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <!-- 个性推荐 -->
       <el-tab-pane label="个性推荐" name="first">
-        <div>
-          <el-carousel :interval="4000" type="card" height="200px">
-            <!-- 循环生成标签，轮播图 -->
-            <el-carousel-item v-for="(item, index) in banners" :key="index">
-              <img :src="item.imageUrl" />
-            </el-carousel-item>
-          </el-carousel>
-        </div>
+        <!-- 轮播图 -->
+        <banner></banner>
+        <!-- 推荐歌单 -->
+        <recommend></recommend>
       </el-tab-pane>
 
       <!-- 歌单 -->
@@ -100,6 +96,8 @@
 <script>
 import axios from "axios";
 import Bus from "../bus.js";
+import Recommend from "./discovery/recommend.vue";
+import Banner from "./discovery/banner.vue";
 
 export default {
   name: "discovery",
@@ -107,8 +105,6 @@ export default {
   data() {
     return {
       activeName: "first",
-      // 轮播图
-      banners: [],
       // 推荐歌单
       list: [],
       // 最新音乐
@@ -175,14 +171,6 @@ export default {
 
   created() {
     axios({
-      // url: "http://autumnfish.cn/banner",
-      url: "http://localhost:3000/banner",
-      method: "get",
-    }).then((response) => {
-      this.banners = response.data.banners;
-    });
-
-    axios({
       // url: "https://autumnfish.cn/personalized",
       url: "http://localhost:3000/top/playlist",
       method: "get",
@@ -235,6 +223,11 @@ export default {
       // console.log(response);
       this.tag = response.data.tags;
     });
+  },
+
+  components: {
+    Recommend,
+    Banner,
   },
 };
 </script>
